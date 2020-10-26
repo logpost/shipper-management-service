@@ -8,13 +8,6 @@ db:
     password: root
     host: mongo
     port: 27017
-    name: todo_template
+    name: shipper_development
     auth: admin
-    collection: todo
-
-queue:
-  connection:
-    username: guest
-    password: guest
-    host: rabbitmq
-    port: 5672
+    collection: shipper_account
