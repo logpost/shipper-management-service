@@ -12,7 +12,7 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "incremental": false,
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "noEmit": false
   },

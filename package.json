@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-typescript-fastify-clean-architecture",
+  "name": "shipper-management-service",
   "version": "1.0.0",
-  "description": "Template for starting backend with typescript + fastify + clean architecture",
+  "description": "shipper-management-service for logpost.com",
   "main": "dist/server.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -15,33 +15,32 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aslupin/boilerplate-typescript-fastify-clean-architecture.git"
+    "url": "git+https://github.com/logpost/shipper-management-service.git"
   },
-  "author": "poonsht",
+  "author": "logpost",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aslupin/boilerplate-typescript-fastify-clean-architecture/issues"
+    "url": "https://github.com/logpost/shipper-management-service/issues"
   },
-  "homepage": "https://github.com/aslupin/boilerplate-typescript-fastify-clean-architecture#readme",
+  "homepage": "https://github.com/logpost/shipper-management-service#readme",
   "dependencies": {
-    "@sentry/node": "^5.15.5",
-    "@types/amqplib": "^0.5.13",
-    "amqplib": "^0.5.6",
     "axios": "^0.19.2",
+    "bcrypt": "^5.0.0",
     "config-yaml": "^1.1.4",
     "dotenv": "^8.2.0",
     "fastify": "^3.7.0",
-    "mongoose": "^5.9.10",
+    "mongoose": "^5.10.10",
     "ts-node": "^8.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-typescript": "^7.9.0",
+    "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",
     "@types/config-yaml": "^1.1.1",
     "@types/jest": "^25.2.1",
-    "@types/mongoose": "^5.7.14",
+    "@types/mongoose": "^5.7.36",
     "@types/node": "^13.13.4",
     "babel-jest": "^26.0.0",
     "jest": "^26.0.0",
