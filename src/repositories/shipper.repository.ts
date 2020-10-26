@@ -1,7 +1,7 @@
-import { model, Model, Mongoose } from 'mongoose'
+import { model, Model } from 'mongoose'
 import { ShipperInterface } from '../entities/interfaces/data/shipper.interface'
 import { ShipperSchema } from '../entities/schemas/shipper.schema'
-import { createDTO, identifierDTO ,whitelistUpdateFieldDTO } from '../entities/dtos/shipper.dto'
+import { createDTO, identifierDTO ,updateProfileDTO, whitelistupdateProfileDTO } from '../entities/dtos/shipper.dto'
 
 import config from '../config/config'
 
@@ -25,7 +25,7 @@ class ShipperRepository {
   // public async findAllShipper(): Promise<ShipperInterface[]> {
   //   const result = await this._model.find({})
   //   return result as ShipperInterface[]
-  // }
+  
 
   // public async findAllShippersInChannel(channel: { [key: string]: string }): Promise<ShipperInterface[]> {
   //   const result = await this._model.find(channel)
@@ -33,7 +33,7 @@ class ShipperRepository {
   // }
 
   public async findShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface | null> {
-    const result: ShipperInterface = (await this._model.findOne(identifier))!
+    const result: ShipperInterface = (await this._model.findOne(identifier, { _id: 0, password: 0, created_at: 0, updated_at: 0}))!
     return result 
   }
 
@@ -47,11 +47,18 @@ class ShipperRepository {
     const { _id: shipper_id } = await mongooseModel.save()
     return shipper_id as string
   }
-
+  
   public async updateEmailByIdentifier(identifier: identifierDTO, email: string): Promise<string> {
     const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: { email }})
     return shipper_id as string
   }
+
+  public async updateProfileShipperAccountByIdentifier(identifier: identifierDTO, profile: whitelistupdateProfileDTO): Promise<string> {
+    const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: profile })
+    return shipper_id as string
+  }
+
+
   // public async updateShipper(_id: string, dataUpdate: whitelistUpdateFieldDTO): Promise<number> {
   //   const result = await this._model.updateOne({ _id }, {
   //     $set: {

@@ -29,17 +29,18 @@ interface deleteDTO {
   password: string
 }
 
-interface updateDTO {
-  _id: string
-  task_name?: string
-  task_content?: string 
+interface updateProfileDTO {
+  identifier: identifierDTO
+  profile: whitelistupdateProfileDTO
 }
 
-
-
-interface whitelistUpdateFieldDTO {
-  task_name?: string
-  task_content?: string 
+interface whitelistupdateProfileDTO {
+  name?: string
+  display_name?: string
+  tel?: string
+  address?: string
+  account_description?: string
+  juristic_id?: string
 }
 
-export { createDTO, updateDTO, whitelistUpdateFieldDTO, deleteDTO, confirmedEmailDTO, identifierDTO}
+export { createDTO, updateProfileDTO, whitelistupdateProfileDTO, deleteDTO, confirmedEmailDTO, identifierDTO}
