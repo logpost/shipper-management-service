@@ -9,6 +9,18 @@ import {
   deleteDTO
 } from '../entities/dtos/shipper.dto'
 
+async function adminFindShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface> {
+  try {
+    const shipperRepository = ShipperRepository.getInstance()
+    const data = await shipperRepository.adminFindShipperByIdentifier(identifier)  
+    if(data)
+      return data
+  } catch (error) {
+    throw new Error(`400 : Save data is not successfully`)
+  }
+  throw new Error(`404 : username is not exist in database`)
+}
+
 async function findProfileShipperAccountByUsername(identifier: identifierDTO): Promise<ShipperInterface> {
   try {
     const shipperRepository = ShipperRepository.getInstance()
@@ -19,26 +31,30 @@ async function findProfileShipperAccountByUsername(identifier: identifierDTO): P
     throw new Error(`400 : Save data is not successfully`)
   }
   throw new Error(`404 : username is not exist in database`)
-  
 }
 
 async function createShipperAccount(shipper_account: createDTO): Promise<string> {
   const shipperRepository = ShipperRepository.getInstance()
-  
-  let { password } = shipper_account
+  let { username, password } = shipper_account
+  const account = await shipperRepository.findShipperByIdentifier({ username })
+  if(!account){
+
     if(password)
       shipper_account.password = await hashing(password)
     else
       throw new Error(`400 : Invalid input, Please input field password`)
 
-  try {
-    const shipper_id = await shipperRepository.createShipperAccount(shipper_account)
-    console.log("Create shipper account success: shipper_id is",shipper_id)
-    return `200 : Save data is successfully`
-  } catch (err) {
-    console.error(err)
-    throw new Error(`400 : Save data is not successfully`)
+    try {
+      const shipper_id = await shipperRepository.createShipperAccount(shipper_account)
+      console.log("Create shipper account success: shipper_id is", shipper_id)
+      return `201 : Create shipper account is successfully`
+    } catch (err) {
+      console.error(err)
+      throw new Error(`400 : Save data is not successfully`)
+    } 
+
   }
+  throw new Error(`400 : Account is existing, create account didn't successfully`)
 }
 
 async function confirmedWithEmail(req: confirmedEmailDTO): Promise<string> {
@@ -132,6 +148,7 @@ async function deActivateShipperAccount(req: deleteDTO): Promise<string> {
 }
 
 export default {
+  adminFindShipperByIdentifier,
   updateProfileShipperAccount,
   findProfileShipperAccountByUsername,
   createShipperAccount,

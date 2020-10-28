@@ -22,18 +22,13 @@ class ShipperRepository {
     return ShipperRepository.instance
   }
 
-  // public async findAllShipper(): Promise<ShipperInterface[]> {
-  //   const result = await this._model.find({})
-  //   return result as ShipperInterface[]
-  
-
-  // public async findAllShippersInChannel(channel: { [key: string]: string }): Promise<ShipperInterface[]> {
-  //   const result = await this._model.find(channel)
-  //   return result as ShipperInterface[]
-  // }
+  public async adminFindShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface | null> {
+    const result: ShipperInterface | null = await this._model.findOne(identifier)
+    return result 
+  }
 
   public async findShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface | null> {
-    const result: ShipperInterface = (await this._model.findOne(identifier, { _id: 0, password: 0, created_at: 0, updated_at: 0}))!
+    const result: ShipperInterface | null = await this._model.findOne(identifier, { _id: 0, password: 0, created_at: 0, updated_at: 0})
     return result 
   }
 
@@ -57,6 +52,17 @@ class ShipperRepository {
     const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: profile })
     return shipper_id as string
   }
+
+
+  // public async findAllShipper(): Promise<ShipperInterface[]> {
+  //   const result = await this._model.find({})
+  //   return result as ShipperInterface[]
+  
+
+  // public async findAllShippersInChannel(channel: { [key: string]: string }): Promise<ShipperInterface[]> {
+  //   const result = await this._model.find(channel)
+  //   return result as ShipperInterface[]
+  // }
 
 
   // public async updateShipper(_id: string, dataUpdate: whitelistUpdateFieldDTO): Promise<number> {

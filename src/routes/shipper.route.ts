@@ -4,10 +4,19 @@ import responseHandler from '../helper/response.handler'
 import { createDTO, confirmedEmailDTO,  deleteDTO, identifierDTO, updateProfileDTO , whitelistupdateProfileDTO} from '../entities/dtos/shipper.dto'
 import * as Validator from '../helper/validate.helper'
 
-class TodoRoutes {
+class ShipperRoutes {
   public prefix_route = '/shipper'
 
   async routes(fastify: FastifyInstance) {
+
+    fastify.get(`/admin/profile/:username`, async (request, reply) => {
+      responseHandler(async () => {
+        const param: identifierDTO = request.params as identifierDTO   
+        const data = await ShipperUsecase.adminFindShipperByIdentifier(param)
+        return data
+      }, reply)
+      await reply
+    })
 
     fastify.get(`/profile/:username`, async (request, reply) => {
       responseHandler(async () => {
@@ -32,13 +41,12 @@ class TodoRoutes {
     fastify.put(`/confirmed_email`, async (request, reply) => {
       responseHandler(async () => {
         const req: confirmedEmailDTO = request.body as confirmedEmailDTO
-        
-        let { email, ...identifierRequest } = req 
+        let { email, identifier } = req 
         
         if(!email)
           throw new Error(`400 : Invalid input, Please input field email`)  
 
-        if('username' in identifierRequest || 'shipper_id' in identifierRequest){
+        if('username' in identifier || 'shipper_id' in identifier){
           const data = await ShipperUsecase.confirmedWithEmail(req)
           return data  
         } else {
@@ -102,4 +110,4 @@ class TodoRoutes {
 
 }
 
-export default TodoRoutes
+export default ShipperRoutes
