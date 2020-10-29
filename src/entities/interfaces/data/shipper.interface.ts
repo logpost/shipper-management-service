@@ -15,6 +15,7 @@ interface ShipperDocument extends Document {
     readonly verified: boolean
     readonly jobs: string[]
     readonly create_at: Date
+    readonly updated_at: Date 
 }
 
 type ShipperInterface = ShipperDocument
