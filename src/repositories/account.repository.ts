@@ -5,8 +5,8 @@ import { createDTO, identifierDTO ,updateProfileDTO, whitelistupdateProfileDTO }
 
 import config from '../config/config'
 
-class ShipperRepository {
-  private static instance: ShipperRepository
+class AccountRepository {
+  private static instance: AccountRepository
   private _model: Model<ShipperInterface>
   private _collection: string
 
@@ -15,11 +15,11 @@ class ShipperRepository {
     this._model = model<ShipperInterface>(this._collection, ShipperSchema)
   }
 
-  public static getInstance(): ShipperRepository {
-    if (!ShipperRepository.instance) {
-      ShipperRepository.instance = new ShipperRepository()
+  public static getInstance(): AccountRepository {
+    if (!AccountRepository.instance) {
+      AccountRepository.instance = new AccountRepository()
     }
-    return ShipperRepository.instance
+    return AccountRepository.instance
   }
 
   public async adminFindShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface | null> {
@@ -86,4 +86,4 @@ class ShipperRepository {
 
 }
 
-export default ShipperRepository
+export default AccountRepository

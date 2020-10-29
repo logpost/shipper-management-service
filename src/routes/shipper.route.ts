@@ -99,7 +99,7 @@ class ShipperRoutes {
       await reply
     })
 
-    fastify.put(`/update`, { preValidation: [(fastify as any).authenticate] }, async (request, reply) => {
+    fastify.put(`/profile/update`, { preValidation: [(fastify as any).authenticate] }, async (request, reply) => {
       responseHandler(async () => {
         const { username } = request.user as Payload
         const identifier: identifierDTO  = { username }

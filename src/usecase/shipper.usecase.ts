@@ -1,5 +1,5 @@
 import { ShipperInterface } from '../entities/interfaces/data/shipper.interface'
-import ShipperRepository from '../repositories/shipper.repository'
+import AccountRepository from '../repositories/account.repository'
 import { hashing, compareHashed } from '../helper/hashing.handler'
 import {
   createDTO,
@@ -11,8 +11,8 @@ import {
 
 async function adminFindShipperByIdentifier(identifier: identifierDTO): Promise<ShipperInterface> {
   try {
-    const shipperRepository = ShipperRepository.getInstance()
-    const data = await shipperRepository.adminFindShipperByIdentifier(identifier)  
+    const accountRepository = AccountRepository.getInstance()
+    const data = await accountRepository.adminFindShipperByIdentifier(identifier)  
     if(data)
       return data
   } catch (error) {
@@ -23,8 +23,8 @@ async function adminFindShipperByIdentifier(identifier: identifierDTO): Promise<
 
 async function findProfileShipperAccountByUsername(identifier: identifierDTO): Promise<ShipperInterface> {
   try {
-    const shipperRepository = ShipperRepository.getInstance()
-    const data = await shipperRepository.findShipperByIdentifier(identifier)  
+    const accountRepository = AccountRepository.getInstance()
+    const data = await accountRepository.findShipperByIdentifier(identifier)  
     if(data)
       return data
   } catch (error) {
@@ -34,9 +34,9 @@ async function findProfileShipperAccountByUsername(identifier: identifierDTO): P
 }
 
 async function createShipperAccount(shipper_account: createDTO): Promise<string> {
-  const shipperRepository = ShipperRepository.getInstance()
+  const accountRepository = AccountRepository.getInstance()
   let { username, password } = shipper_account
-  const account = await shipperRepository.findShipperByIdentifier({ username })
+  const account = await accountRepository.findShipperByIdentifier({ username })
 
   if(!account){
     if(password)
@@ -44,11 +44,11 @@ async function createShipperAccount(shipper_account: createDTO): Promise<string>
     else
       throw new Error(`400 : Invalid input, Please input field password`)
     try {
-      const shipper_id = await shipperRepository.createShipperAccount(shipper_account)
+      const shipper_id = await accountRepository.createShipperAccount(shipper_account)
       console.log("Create shipper account success: shipper_id is", shipper_id)
       return `201 : Create shipper account is successfully`
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       throw new Error(`400 : Save data is not successfully`)
     } 
   }
@@ -56,16 +56,16 @@ async function createShipperAccount(shipper_account: createDTO): Promise<string>
 }
 
 async function confirmedWithEmail(req: confirmedEmailDTO): Promise<string> {
-  const shipperRepository = ShipperRepository.getInstance()
+  const accountRepository = AccountRepository.getInstance()
   let { identifier, email } =  req
-  const account = await shipperRepository.findShipperByIdentifier(identifier)
+  const account = await accountRepository.findShipperByIdentifier(identifier)
 
   if(account){
     try {
-      await shipperRepository.updateEmailByIdentifier(identifier, email)
+      await accountRepository.updateEmailByIdentifier(identifier, email)
       return `200 : Comfirmed, Email is update successfully`
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       throw new Error(`400 : Save data is not successfully`)
     }
   }
@@ -73,25 +73,25 @@ async function confirmedWithEmail(req: confirmedEmailDTO): Promise<string> {
 }
 
 async function updateProfileShipperAccount(req: updateProfileDTO): Promise<string> {
-  const shipperRepository = ShipperRepository.getInstance()
+  const accountRepository = AccountRepository.getInstance()
   const { identifier, profile } = req
 
   try {
-    await shipperRepository.updateProfileShipperAccountByIdentifier(identifier, profile)
+    await accountRepository.updateProfileShipperAccountByIdentifier(identifier, profile)
     return `200 : Updated, Profile is update successfully`
-  } catch (err) {
-    console.error(err)
-    throw new Error(`400 : Save data is not successfully`)
+  } catch (error) {
+    console.error(error)
+    throw new Error(`400 : Update profile is not successfully`)
   }
 }
 
 async function deleteShipperAccount(req: deleteDTO): Promise<string> {
-  const shipperRepository = ShipperRepository.getInstance()
+  const accountRepository = AccountRepository.getInstance()
   let { identifier , password } =  req
   let hash: string | null
 
   try {
-    hash = await shipperRepository.findPasswordHashedByIdentifier(identifier)
+    hash = await accountRepository.findPasswordHashedByIdentifier(identifier)
   } catch (error) {
     console.log(error)
     throw new Error(`404 : Invalid input, Your identifier is not exist`)  
@@ -100,7 +100,7 @@ async function deleteShipperAccount(req: deleteDTO): Promise<string> {
   if(hash){
     const match = await compareHashed(password, hash)
     if(match){
-        const deleteResult: number = await shipperRepository.deleteShipperAccount(identifier)
+        const deleteResult: number = await accountRepository.deleteShipperAccount(identifier)
         if (deleteResult) 
           return `200 : Delete account is successfully`
         throw new Error(`404 : Delete data is not successfully, don't have data in Database`)
@@ -112,12 +112,12 @@ async function deleteShipperAccount(req: deleteDTO): Promise<string> {
 
 async function deActivateShipperAccount(req: deleteDTO): Promise<string> {
   const bias: string = "_deactivete"
-  const shipperRepository = ShipperRepository.getInstance()
+  const accountRepository = AccountRepository.getInstance()
   let { identifier , password } =  req
   let hash: string | null
 
   try {
-    hash = await shipperRepository.findPasswordHashedByIdentifier(identifier)
+    hash = await accountRepository.findPasswordHashedByIdentifier(identifier)
   } catch (error) {
     console.log(error)
     throw new Error(`404 : Invalid input, Your identifier is not exist`)  
@@ -127,9 +127,9 @@ async function deActivateShipperAccount(req: deleteDTO): Promise<string> {
     const match = await compareHashed(password, hash)
     if(match){
       try {
-        const shipprt_account = await shipperRepository.findShipperByIdentifier(identifier) as ShipperInterface
+        const shipprt_account = await accountRepository.findShipperByIdentifier(identifier) as ShipperInterface
         const { username } = shipprt_account
-        const nModified = await shipperRepository.deActivateShipperAccount(identifier, username, bias)
+        const nModified = await accountRepository.deActivateShipperAccount(identifier, username, bias)
         if(nModified >= 1)
               return `200 : DeActivate account is successfully`
       } catch (err) {
