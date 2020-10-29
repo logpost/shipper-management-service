@@ -15,12 +15,11 @@ class App {
     authName: config.db.mongo.auth!,
   }
 
-  constructor(appInit: { middleWares: { before: any; after: any }; routes: any }) {
+  constructor(appInit: { plugins: any; routes: any }) {
     this.app = fastify({ logger: true })
     this.connectDatabase()
-    // this.middlewares(appInit.middleWares.before)
-    this.routes(appInit.routes)
-    // this.middlewares(appInit.middleWares.after)
+    this.pluginsRegister(appInit.plugins)
+    this.routes(appInit.routes) 
   }
 
   private async connectDatabase() {
@@ -28,19 +27,17 @@ class App {
     await new MongoAdapter(username, password, host, port, dbName, authName)
   }
 
-  // private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void }) {
-  //   middleWares.forEach((middleWare) => {
-  //     this.app.register(middleWare)
-  //   })
-  // }
+  private pluginsRegister(plugins: { forEach: (arg0: (plugins: any) => void) => void }) {
+    plugins.forEach((plugin) => {
+      this.app.register(plugin)
+    })
+  }
 
   public routes(routes: { forEach: (arg0: (routes: any) => void) => void }) {
     routes.forEach((route) => {
       let router = new route()
       this.app.register(router.routes, { prefix: router.prefix_route })
     })
-
-    this.app.get('/healthcheck', async (request, reply) => { reply.send({healthcheck: "server is alive"}) })
   }
 
   public listen() {
