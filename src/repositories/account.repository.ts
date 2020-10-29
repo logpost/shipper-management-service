@@ -1,7 +1,7 @@
 import { model, Model } from 'mongoose'
 import { ShipperInterface } from '../entities/interfaces/data/shipper.interface'
 import { ShipperSchema } from '../entities/schemas/shipper.schema'
-import { createDTO, identifierDTO ,updateProfileDTO, whitelistupdateProfileDTO } from '../entities/dtos/shipper.dto'
+import { createDTO, identifierDTO ,updateProfileDTO, whitelistUpdateProfileDTO } from '../entities/dtos/shipper.dto'
 
 import config from '../config/config'
 
@@ -48,31 +48,10 @@ class AccountRepository {
     return shipper_id as string
   }
 
-  public async updateProfileShipperAccountByIdentifier(identifier: identifierDTO, profile: whitelistupdateProfileDTO): Promise<string> {
+  public async updateProfileShipperAccountByIdentifier(identifier: identifierDTO, profile: whitelistUpdateProfileDTO): Promise<string> {
     const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: profile })
     return shipper_id as string
   }
-
-
-  // public async findAllShipper(): Promise<ShipperInterface[]> {
-  //   const result = await this._model.find({})
-  //   return result as ShipperInterface[]
-  
-
-  // public async findAllShippersInChannel(channel: { [key: string]: string }): Promise<ShipperInterface[]> {
-  //   const result = await this._model.find(channel)
-  //   return result as ShipperInterface[]
-  // }
-
-
-  // public async updateShipper(_id: string, dataUpdate: whitelistUpdateFieldDTO): Promise<number> {
-  //   const result = await this._model.updateOne({ _id }, {
-  //     $set: {
-  //       ...dataUpdate,
-  //     },
-  //   })
-  //   return result.n as number
-  // }
 
   public async deleteShipperAccount(identifier: identifierDTO): Promise<number> {
     const result = await this._model.deleteOne(identifier)
@@ -83,6 +62,12 @@ class AccountRepository {
     const result = await this._model.updateOne(identifier, { $set: { username : bias + username }})
     return result.nModified as number
   }
+
+  public async updateJobHistory(_id: string, job_id: string): Promise<number> {
+    const result = await this._model.updateOne({ _id }, { $push: { "jobs" : job_id as any } })
+    return result.n
+  }
+
 
 }
 

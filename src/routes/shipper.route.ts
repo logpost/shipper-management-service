@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 import ShipperUsecase from '../usecase/shipper.usecase'
 import responseHandler from '../helper/response.handler'
 import { Payload } from '../entities/dtos/token.dto'
-import { createDTO, confirmedEmailDTO,  deleteDTO, identifierDTO, updateProfileDTO , whitelistupdateProfileDTO} from '../entities/dtos/shipper.dto'
+import { createDTO, confirmedEmailDTO,  deleteDTO, identifierDTO, updateJobHistoryDTO , whitelistUpdateProfileDTO} from '../entities/dtos/shipper.dto'
 import * as Validator from '../helper/validate.helper'
 
 class ShipperRoutes {
@@ -103,7 +103,7 @@ class ShipperRoutes {
       responseHandler(async () => {
         const { username } = request.user as Payload
         const identifier: identifierDTO  = { username }
-        const profile: whitelistupdateProfileDTO = request.body as whitelistupdateProfileDTO
+        const profile: whitelistUpdateProfileDTO = request.body as whitelistUpdateProfileDTO
 
         if(identifier.username || identifier.shipper_id){
           const errorFieldsUpdate = Validator.validUpdatedFields(profile, 'shipper')
@@ -115,6 +115,15 @@ class ShipperRoutes {
 
         const data = await ShipperUsecase.updateProfileShipperAccount({ identifier, profile })
         return data
+      }, reply)
+      await reply
+    })
+
+    fastify.put(`/job/push`, { preValidation: [(fastify as any).authenticate] }, async (request, reply) => {
+      responseHandler(async () => {
+        const { shipper_id, job_id } = request.body as updateJobHistoryDTO
+        await ShipperUsecase.updateJobHistory(shipper_id, job_id)
+        return `200 : Update job history success`
       }, reply)
       await reply
     })

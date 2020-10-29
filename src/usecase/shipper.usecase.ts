@@ -142,6 +142,18 @@ async function deActivateShipperAccount(req: deleteDTO): Promise<string> {
   throw new Error(`404 : Invalid input, Your identifier is not exist`)  
 }
 
+async function updateJobHistory(shipper_id: string, job_id: string): Promise<string> {
+  const accountRepository = AccountRepository.getInstance()
+  try {
+    await accountRepository.updateJobHistory(shipper_id, job_id)
+    return `201 : Update job history is successfully`
+  } catch (err) {
+      console.log(err)
+    throw new Error(`400 : Update job history is not successfully`)
+  } 
+  return ''
+}
+
 export default {
   adminFindShipperByIdentifier,
   updateProfileShipperAccount,
@@ -149,5 +161,6 @@ export default {
   createShipperAccount,
   confirmedWithEmail,
   deleteShipperAccount,
-  deActivateShipperAccount
+  deActivateShipperAccount,
+  updateJobHistory
 }

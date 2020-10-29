@@ -14,27 +14,7 @@ interface createDTO {
   create_at?: Date
 }
 
-interface identifierDTO {
-  shipper_id?: string
-  username?: string
-}
-
-interface confirmedEmailDTO {
-  identifier: identifierDTO
-  email: string
-}
-
-interface deleteDTO {
-  identifier: identifierDTO
-  password: string
-}
-
-interface updateProfileDTO {
-  identifier: identifierDTO
-  profile: whitelistupdateProfileDTO
-}
-
-interface whitelistupdateProfileDTO {
+interface whitelistUpdateProfileDTO {
   name?: string
   display_name?: string
   tel?: string
@@ -42,5 +22,33 @@ interface whitelistupdateProfileDTO {
   account_description?: string
   juristic_id?: string
 }
+interface identifierDTO {
+  shipper_id?: string
+  username?: string
+}
+interface deleteDTO {
+  identifier: identifierDTO
+  password: string
+}
+interface updateProfileDTO {
+  identifier: identifierDTO
+  profile: whitelistUpdateProfileDTO
+}
+interface confirmedEmailDTO {
+  identifier: identifierDTO
+  email: string
+}
+interface updateJobHistoryDTO {
+  shipper_id: string
+  job_id: string
+}
 
-export { createDTO, updateProfileDTO, whitelistupdateProfileDTO, deleteDTO, confirmedEmailDTO, identifierDTO}
+export { 
+  createDTO, 
+  updateProfileDTO, 
+  whitelistUpdateProfileDTO, 
+  deleteDTO, 
+  confirmedEmailDTO, 
+  identifierDTO, 
+  updateJobHistoryDTO
+}
