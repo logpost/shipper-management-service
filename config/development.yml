@@ -25,6 +25,6 @@ db:
     password: root
     host: localhost
     port: 27017
-    name: shipper_development
+    name: logpost
     auth: admin
     collection: shipper_account
