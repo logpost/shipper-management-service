@@ -14,8 +14,9 @@
     "incremental": false,
     "strict": true,
     "esModuleInterop": true,
-    "noEmit": false
+    "noEmit": false,
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dist", "test"],
+  "files": ["./src/entities/@types/fastify/index.d.ts"]
 }
