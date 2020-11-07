@@ -39,17 +39,17 @@ class AccountRepository {
 
   public async createShipperAccount(shipper_account: createDTO): Promise<string> {
     const mongooseModel = new this._model(shipper_account)
-    const { _id: shipper_id } = await mongooseModel.save()
+    const { shipper_id } = await mongooseModel.save()
     return shipper_id as string
   }
   
   public async updateEmailByIdentifier(identifier: identifierDTO, email: string): Promise<string> {
-    const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: { email }})
+    const { shipper_id } = await this._model.updateOne(identifier, { $set: { email }})
     return shipper_id as string
   }
 
   public async updateProfileShipperAccountByIdentifier(identifier: identifierDTO, profile: whitelistUpdateProfileDTO): Promise<string> {
-    const { _id: shipper_id } = await this._model.updateOne(identifier, { $set: profile })
+    const { shipper_id } = await this._model.updateOne(identifier, { $set: profile })
     return shipper_id as string
   }
 
@@ -63,12 +63,10 @@ class AccountRepository {
     return result.nModified as number
   }
 
-  public async updateJobHistory(_id: string, job_id: string): Promise<number> {
-    const result = await this._model.updateOne({ _id }, { $push: { "jobs" : job_id as any } })
+  public async updateJobHistory(shipper_id: string, job_id: string): Promise<number> {
+    const result = await this._model.updateOne({ shipper_id }, { $push: { "jobs" : job_id as any } })
     return result.n
   }
-
-
 }
 
 export default AccountRepository

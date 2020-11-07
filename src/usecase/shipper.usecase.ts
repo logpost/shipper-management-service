@@ -18,7 +18,7 @@ async function adminFindShipperByIdentifier(identifier: identifierDTO): Promise<
   } catch (error) {
     throw new Error(`400 : Save data is not successfully`)
   }
-  throw new Error(`404 : username is not exist in database`)
+  throw new Error(`404 : Username is not exist in database`)
 }
 
 async function findProfileShipperAccountByUsername(identifier: identifierDTO): Promise<ShipperInterface> {
@@ -30,7 +30,7 @@ async function findProfileShipperAccountByUsername(identifier: identifierDTO): P
   } catch (error) {
     throw new Error(`400 : Save data is not successfully`)
   }
-  throw new Error(`404 : username is not exist in database`)
+  throw new Error(`404 : Username is not exist in database`)
 }
 
 async function createShipperAccount(shipper_account: createDTO): Promise<string> {
@@ -48,7 +48,6 @@ async function createShipperAccount(shipper_account: createDTO): Promise<string>
       console.log("Create shipper account success: shipper_id is", shipper_id)
       return `201 : Create shipper account is successfully`
     } catch (error) {
-      console.error(error)
       throw new Error(`400 : Save data is not successfully`)
     } 
   }
@@ -65,11 +64,10 @@ async function confirmedWithEmail(req: confirmedEmailDTO): Promise<string> {
       await accountRepository.updateEmailByIdentifier(identifier, email)
       return `200 : Comfirmed, Email is update successfully`
     } catch (error) {
-      console.error(error)
       throw new Error(`400 : Save data is not successfully`)
     }
   }
-  throw new Error(`404 : your username is not exist in database.`)
+  throw new Error(`404 : Your username is not exist in database.`)
 }
 
 async function updateProfileShipperAccount(req: updateProfileDTO): Promise<string> {
@@ -80,7 +78,6 @@ async function updateProfileShipperAccount(req: updateProfileDTO): Promise<strin
     await accountRepository.updateProfileShipperAccountByIdentifier(identifier, profile)
     return `200 : Updated, Profile is update successfully`
   } catch (error) {
-    console.error(error)
     throw new Error(`400 : Update profile is not successfully`)
   }
 }
@@ -93,7 +90,6 @@ async function deleteShipperAccount(req: deleteDTO): Promise<string> {
   try {
     hash = await accountRepository.findPasswordHashedByIdentifier(identifier)
   } catch (error) {
-    console.log(error)
     throw new Error(`404 : Invalid input, Your identifier is not exist`)  
   }
 
@@ -119,7 +115,6 @@ async function deActivateShipperAccount(req: deleteDTO): Promise<string> {
   try {
     hash = await accountRepository.findPasswordHashedByIdentifier(identifier)
   } catch (error) {
-    console.log(error)
     throw new Error(`404 : Invalid input, Your identifier is not exist`)  
   }
 
@@ -148,10 +143,8 @@ async function updateJobHistory(shipper_id: string, job_id: string): Promise<str
     await accountRepository.updateJobHistory(shipper_id, job_id)
     return `201 : Update job history is successfully`
   } catch (err) {
-      console.log(err)
     throw new Error(`400 : Update job history is not successfully`)
   } 
-  return ''
 }
 
 export default {
