@@ -33,7 +33,7 @@ async function findProfileShipperAccountByUsername(identifier: identifierDTO): P
   throw new Error(`404 : Username is not exist in database`)
 }
 
-async function createShipperAccount(shipper_account: createDTO): Promise<string> {
+async function createShipperAccount(shipper_account: createDTO): Promise<identifierDTO> {
   const accountRepository = AccountRepository.getInstance()
   let { username, password } = shipper_account
   const account = await accountRepository.findShipperByIdentifier({ username })
@@ -46,7 +46,7 @@ async function createShipperAccount(shipper_account: createDTO): Promise<string>
     try {
       const shipper_id = await accountRepository.createShipperAccount(shipper_account)
       console.log("Create shipper account success: shipper_id is", shipper_id)
-      return `201 : Create shipper account is successfully`
+      return { shipper_id }
     } catch (error) {
       throw new Error(`400 : Save data is not successfully`)
     } 

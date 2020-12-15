@@ -10,6 +10,7 @@ interface ShipperDocument extends Document {
     readonly tel: string
     readonly address: string
     readonly account_type: string
+    readonly role: string
     readonly account_description: string
     readonly juristic_id: string
     readonly verified: boolean
