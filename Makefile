@@ -1,3 +1,9 @@
+ImageName := shipper-logpost
+DockerPath := ./docker/stag.Dockerfile
+
+GCP_ProjectID := logpost-298506
+GCR_TagStaging := asisa.gcr.io/${GCP_ProjectID}/${ImageName}
+
 SERVICE_NAME := boilerplate-typescript-fastify-clean-architecture
 .DEFAULT_GOAL := setup
 MONGO_AUTH_NAME := admin
@@ -30,3 +36,13 @@ postman-test-api:
 
 postman-test-api-on-gh-action:
 	sh postman.api_test.gh_action.sh
+
+docker-build:
+	docker build -f ${DockerPath} . -t ${GCR_TagStaging}
+docker-push: 
+	docker push ${GCR_TagStaging}
+
+docker-build-push:
+	make docker-build; \
+	make docker-push;
+	
