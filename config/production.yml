@@ -1,13 +1,30 @@
 app:
+  domain: localhost
   kind: production
   port: 8080
+
+jwt:
+  confirm_email:
+    secret:
+      jwt_secret: logpostemailconfirm
+    options:
+      expires_in: 14hr
+      issuer: logpost
+      audience: mailer
+  private_route:
+    secret:
+      jwt_secret: logpostprivateroute
+    options:
+      expires_in: 30d
+      issuer: logpost
+      audience: logpost
 
 db:
   mongo:
     username: root
     password: root
-    host: mongo
+    host: localhost
     port: 27017
-    name: shipper_development
+    name: logpost
     auth: admin
     collection: shipper_account
