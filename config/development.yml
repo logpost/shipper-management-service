@@ -20,11 +20,13 @@ jwt:
       audience: logpost
 
 db:
+  required:
+    isAuth: false
   mongo:
-    username: root
-    password: root
-    host: localhost
-    port: 27017
-    name: logpost
-    auth: admin
+    protocal: mongodb
+    username: null
+    password: null
+    host: localhost:27017
+    database: logpost
+    options: ?authSource=admin
     collection: shipper_account
