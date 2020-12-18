@@ -20,7 +20,7 @@ class App {
     this.app = fastify({ logger: true })
     this.connectDatabase()
     this.pluginsRegister(appInit.plugins)
-    this.routes(appInit.routes) 
+    this.routes(appInit.routes)
   }
 
   private async connectDatabase() {
@@ -42,7 +42,7 @@ class App {
   }
 
   public listen() {
-    this.app.listen(this.app_port, () => {
+    this.app.listen(process.env.PORT || this.app_port, () => {
       console.log(`Shipper Management Service 📦 \nApp listening on the http://${this.app_doamain}:${this.app_port} 🌟`)
     })
   }
