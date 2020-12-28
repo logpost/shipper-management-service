@@ -19,6 +19,11 @@ jwt:
       issuer: logpost
       audience: logpost
 
+account:
+  api:
+    base_url: https://account-management-service-logpost-stag-qjrfn6j7kq-as.a.run.app
+    prefix_route: /account
+
 db:
   required:
     isAuth: true

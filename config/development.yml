@@ -19,6 +19,11 @@ jwt:
       issuer: logpost
       audience: logpost
 
+account:
+  api:
+    base_url: http://localhost:5000
+    prefix_route: /account
+
 db:
   required:
     isAuth: false
