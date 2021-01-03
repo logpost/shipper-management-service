@@ -14,22 +14,20 @@ const authPlugin = (fastify: FastifyInstance, opts: FastifyPluginOptions, done: 
 
   fastify.decorate('verifyAuth', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-      //   const auth: string | undefined = request.headers.authorization
-      //   const token = auth!.split(' ')[1]
-      //   if (token) {
-      //     const decodedToken: any = fastify.jwt.decode(token)
-      //     const { exp } = decodedToken
-      //     if (exp < new Date().getTime() / 1000) {
-      //       const { refresh_token } = request.cookies
-      //       const res = (await accountAdapter.generateAccessTokenFromRefreshToken(refresh_token)) as any
-
-      //       const { access_token } = res.data
-      //       request.headers.authorization = `Bearer ${access_token}`
-      //     }
-      //   }
+      const auth: string | undefined = request.headers.authorization
+      const token = auth!.split(' ')[1]
+      if (token) {
+        const decodedToken: any = fastify.jwt.decode(token)
+        const { isConfirmEmail, role } = decodedToken
+        if (role === 'shipper' || role === 'srv') {
+          if (!isConfirmEmail) throw { statusCode: 403, message: "your email haven't confirmed." }
+        } else {
+          throw { statusCode: 403, message: "your role can't use the api." }
+        }
+      }
       await request.jwtVerify()
     } catch (err) {
-      responseSender(parseResponse(new Error(`${err.statusCode}: Unauthorize, ${err.message}`)), reply)
+      responseSender(parseResponse(new Error(`${err.statusCode} : Unauthorize, ${err.message}`)), reply)
     }
   })
 
