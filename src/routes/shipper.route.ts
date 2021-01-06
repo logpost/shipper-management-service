@@ -41,6 +41,19 @@ class ShipperRoutes {
       await reply
     })
 
+    fastify.delete(
+      `/srv/job/history/delete`,
+      { preValidation: [(fastify as any).verifyAuth] },
+      async (request, reply) => {
+        responseHandler(async () => {
+          const { identifier, job_id } = request.body as updateJobHistoryDTO
+          await ShipperUsecase.deleteJobHistory(identifier, job_id)
+          return `200 : Delete job history success`
+        }, reply)
+        await reply
+      },
+    )
+
     fastify.post(`/srv/create`, async (request, reply) => {
       responseHandler(async () => {
         const req: createDTO = request.body as createDTO
@@ -52,7 +65,7 @@ class ShipperRoutes {
     })
 
     // This route have vulnerability at client, we should use this route service to service for policy.
-    fastify.put(`/srv/confirmed_email`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+    fastify.put(`/srv/confirmed/email`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
         const req: confirmedEmailDTO = request.body as confirmedEmailDTO
         let { email, identifier } = req
@@ -78,7 +91,7 @@ class ShipperRoutes {
       await reply
     })
 
-    fastify.delete(`/force_delete`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+    fastify.delete(`/force/delete`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
         const req: deleteDTO = request.body as deleteDTO
         const { username } = request.user as Payload
