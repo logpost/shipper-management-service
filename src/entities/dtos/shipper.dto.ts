@@ -1,3 +1,4 @@
+import { JobInterface } from '../interfaces/data/job.interface'
 interface createDTO {
   username: string
   password: string
@@ -11,7 +12,7 @@ interface createDTO {
   account_description?: string
   juristic_id?: string
   verified?: boolean
-  jobs?: string[]
+  job_history?: JobInterface[]
   create_at?: Date
 }
 
@@ -40,16 +41,16 @@ interface confirmedEmailDTO {
   email: string
 }
 interface updateJobHistoryDTO {
-  shipper_id: string
+  identifier: identifierDTO
   job_id: string
 }
 
-export { 
-  createDTO, 
-  updateProfileDTO, 
-  whitelistUpdateProfileDTO, 
-  deleteDTO, 
-  confirmedEmailDTO, 
-  identifierDTO, 
-  updateJobHistoryDTO
+export {
+  createDTO,
+  updateProfileDTO,
+  whitelistUpdateProfileDTO,
+  deleteDTO,
+  confirmedEmailDTO,
+  identifierDTO,
+  updateJobHistoryDTO,
 }
