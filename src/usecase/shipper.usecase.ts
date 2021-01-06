@@ -135,6 +135,17 @@ async function updateJobHistory(identifier: identifierDTO, job_id: string): Prom
   }
 }
 
+async function deleteJobHistory(identifier: identifierDTO, job_id: string): Promise<string> {
+  const accountRepository = AccountRepository.getInstance()
+  try {
+    await accountRepository.deleteJobHistory(identifier, job_id)
+    return `204 : Delete job history history is successfully`
+  } catch (err) {
+    console.log(err)
+    throw new Error(`400 : Delete job history is not successfully`)
+  }
+}
+
 export default {
   srvFindShipperByIdentifier,
   updateProfileShipperAccount,
@@ -144,4 +155,5 @@ export default {
   deleteShipperAccount,
   deActivateShipperAccount,
   updateJobHistory,
+  deleteJobHistory,
 }
