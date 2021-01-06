@@ -76,6 +76,11 @@ class AccountRepository {
     const result = await this._model.updateOne(identifier, { $push: { job_history: job as JobInterface } })
     return result.n
   }
+
+  public async deleteJobHistory(identifier: identifierDTO, job_id: string): Promise<number> {
+    const result = await this._model.update(identifier, { $pull: { job_history: { job_id: job_id } as any } })
+    return result.n
+  }
 }
 
 export default AccountRepository
