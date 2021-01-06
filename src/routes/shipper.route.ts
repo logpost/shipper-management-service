@@ -23,29 +23,25 @@ class ShipperRoutes {
       await reply
     })
 
-    fastify.get(
-      `/admin/profile/:username`,
-      { preValidation: [(fastify as any).verifyAuth] },
-      async (request, reply) => {
-        responseHandler(async () => {
-          const param: identifierDTO = request.params as identifierDTO
-          const data = await ShipperUsecase.adminFindShipperByIdentifier(param)
-          return data
-        }, reply)
-        await reply
-      },
-    )
-
-    fastify.get(`/profile/:username`, async (request, reply) => {
+    fastify.get(`/srv/profile/:username`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
         const param: identifierDTO = request.params as identifierDTO
-        const data = await ShipperUsecase.findProfileShipperAccountByUsername(param)
+        const data = await ShipperUsecase.srvFindShipperByIdentifier(param)
         return data
       }, reply)
       await reply
     })
 
-    fastify.post(`/create`, async (request, reply) => {
+    fastify.put(`/srv/job/history/add`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+      responseHandler(async () => {
+        const { identifier, job_id } = request.body as updateJobHistoryDTO
+        await ShipperUsecase.updateJobHistory(identifier, job_id)
+        return `200 : Update job history success`
+      }, reply)
+      await reply
+    })
+
+    fastify.post(`/srv/create`, async (request, reply) => {
       responseHandler(async () => {
         const req: createDTO = request.body as createDTO
         let { email, ...shipper_account } = req
@@ -56,7 +52,7 @@ class ShipperRoutes {
     })
 
     // This route have vulnerability at client, we should use this route service to service for policy.
-    fastify.put(`/confirmed_email`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+    fastify.put(`/srv/confirmed_email`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
         const req: confirmedEmailDTO = request.body as confirmedEmailDTO
         let { email, identifier } = req
@@ -69,6 +65,15 @@ class ShipperRoutes {
         } else {
           throw new Error(`400 : Invalid input, Please input field username or account id`)
         }
+      }, reply)
+      await reply
+    })
+
+    fastify.get(`/profile/:username`, async (request, reply) => {
+      responseHandler(async () => {
+        const param: identifierDTO = request.params as identifierDTO
+        const data = await ShipperUsecase.findProfileShipperAccountByUsername(param)
+        return data
       }, reply)
       await reply
     })
@@ -118,15 +123,6 @@ class ShipperRoutes {
 
         const data = await ShipperUsecase.updateProfileShipperAccount({ identifier, profile })
         return data
-      }, reply)
-      await reply
-    })
-
-    fastify.put(`/job/push`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
-      responseHandler(async () => {
-        const { shipper_id, job_id } = request.body as updateJobHistoryDTO
-        await ShipperUsecase.updateJobHistory(shipper_id, job_id)
-        return `200 : Update job history success`
       }, reply)
       await reply
     })
