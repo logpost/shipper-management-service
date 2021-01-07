@@ -40,17 +40,5 @@ interface confirmedEmailDTO {
   identifier: identifierDTO
   email: string
 }
-interface updateJobHistoryDTO {
-  identifier: identifierDTO
-  job_id: string
-}
 
-export {
-  createDTO,
-  updateProfileDTO,
-  whitelistUpdateProfileDTO,
-  deleteDTO,
-  confirmedEmailDTO,
-  identifierDTO,
-  updateJobHistoryDTO,
-}
+export { createDTO, updateProfileDTO, whitelistUpdateProfileDTO, deleteDTO, confirmedEmailDTO, identifierDTO }

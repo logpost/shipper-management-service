@@ -1,10 +1,12 @@
 import App from './app'
 // import loggerMiddleware from './middlewares/logger.middleware'
 // import TodoRoutes from './routes/todo.route'
-import ShipperRoutes from './routes/shipper.route'
+import ShipperRoute from './routes/shipper.route'
+import JobRote from './routes/job.route'
 import AuthPlugin from './plugins/auth.plugin'
+
 const app = new App({
-  routes: [ShipperRoutes],
+  routes: [ShipperRoute, JobRote],
   plugins: [AuthPlugin],
 })
 
