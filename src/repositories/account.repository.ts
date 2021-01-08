@@ -86,7 +86,7 @@ class AccountRepository {
 
   public async getJobHistory(identifier: identifierDTO): Promise<JobInterface[]> {
     const { job_history } = (await this._model.findOne(identifier)) as ShipperInterface
-    return job_history
+    return job_history || []
   }
 }
 
