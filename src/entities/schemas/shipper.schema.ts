@@ -21,10 +21,10 @@ export const ShipperSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    job_history: { type: [JobSchema], default: null },
     email: { type: String, default: 'not_confirm', trim: true },
     tel: { type: String, default: null, trim: true },
     juristic_id: { type: String, default: null, trim: true },
+    job_history: { type: [JobSchema], default: null },
   },
   {
     versionKey: false,
