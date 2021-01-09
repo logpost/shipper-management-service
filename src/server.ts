@@ -1,13 +1,14 @@
 import App from './app'
-// import loggerMiddleware from './middlewares/logger.middleware'
-// import TodoRoutes from './routes/todo.route'
+
+import AuthPlugin from './plugins/auth.plugin'
+import CorsPlugin from './plugins/cors.plugin'
+
 import ShipperRoute from './routes/shipper.route'
 import JobRote from './routes/job.route'
-import AuthPlugin from './plugins/auth.plugin'
 
 const app = new App({
   routes: [ShipperRoute, JobRote],
-  plugins: [AuthPlugin],
+  plugins: [AuthPlugin, CorsPlugin],
 })
 
 app.listen()
