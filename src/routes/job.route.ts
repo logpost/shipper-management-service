@@ -17,7 +17,7 @@ class JobRoutes {
       await reply
     })
 
-    fastify.delete(`/srv/history/delete`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+    fastify.put(`/srv/history/delete`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
         const { identifier, job_id } = request.body as updateJobHistoryDTO
         await JobUsecase.deleteJobHistory(identifier, job_id)
