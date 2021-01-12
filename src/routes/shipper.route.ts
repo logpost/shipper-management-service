@@ -7,7 +7,9 @@ import {
   confirmedEmailDTO,
   deleteDTO,
   identifierDTO,
-  whitelistUpdateProfileDTO,
+  whitelistUpdateProfileForShipperDTO,
+  whitelistUpdateProfileForSrvDTO,
+  updateProfileDTO,
 } from '../entities/dtos/shipper.dto'
 import * as Validator from '../helper/validate.helper'
 
@@ -24,9 +26,37 @@ class ShipperRoute {
 
     fastify.get(`/srv/profile/:username`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
       responseHandler(async () => {
-        const param: identifierDTO = request.params as identifierDTO
-        const data = await ShipperUsecase.srvFindShipperByIdentifier(param)
-        return data
+        const { role } = request.user as Payload
+        if (role === 'srv') {
+          const param: identifierDTO = request.params as identifierDTO
+          const data = await ShipperUsecase.srvFindShipperByIdentifier(param)
+          return data
+        }
+        throw new Error(`403 : You havn't permission in this endpoint, pls contract admin.`)
+      }, reply)
+      await reply
+    })
+
+    fastify.put(`/srv/profile/update`, { preValidation: [(fastify as any).verifyAuth] }, async (request, reply) => {
+      responseHandler(async () => {
+        const { role } = request.user as Payload
+        if (role === 'srv') {
+          const account: updateProfileDTO = request.body as updateProfileDTO
+          const { identifier, profile } = account
+          if (identifier.username || identifier.shipper_id) {
+            const errorFieldsUpdate = Validator.validUpdatedFields(
+              profile as whitelistUpdateProfileForSrvDTO,
+              'shipper_srv',
+            )
+            if (errorFieldsUpdate.length > 0) throw new Error(`400 : Invalid Fields! ${errorFieldsUpdate.join(', ')}`)
+          } else {
+            throw new Error(`400 : Invalid input, Input not exist account id or password field`)
+          }
+
+          const data = await ShipperUsecase.updateProfileShipperAccount(account)
+          return data
+        }
+        throw new Error(`403 : You havn't permission in this endpoint, pls contract admin.`)
       }, reply)
       await reply
     })
@@ -102,7 +132,7 @@ class ShipperRoute {
       responseHandler(async () => {
         const { username } = request.user as Payload
         const identifier: identifierDTO = { username }
-        const profile: whitelistUpdateProfileDTO = request.body as whitelistUpdateProfileDTO
+        const profile: whitelistUpdateProfileForShipperDTO = request.body as whitelistUpdateProfileForShipperDTO
 
         if (identifier.username || identifier.shipper_id) {
           const errorFieldsUpdate = Validator.validUpdatedFields(profile, 'shipper')

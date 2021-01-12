@@ -15,8 +15,14 @@ interface createDTO {
   job_history?: JobInterface[]
   create_at?: Date
 }
-
-interface whitelistUpdateProfileDTO {
+interface whitelistUpdateProfileForSrvDTO {
+  username?: string
+  password?: string
+  email?: string
+  verified?: boolean
+  account_type?: string
+}
+interface whitelistUpdateProfileForShipperDTO {
   name?: string
   display_name?: string
   tel?: string
@@ -34,11 +40,22 @@ interface deleteDTO {
 }
 interface updateProfileDTO {
   identifier: identifierDTO
-  profile: whitelistUpdateProfileDTO
+  profile: whitelistUpdateAccountProfileDTO
 }
 interface confirmedEmailDTO {
   identifier: identifierDTO
   email: string
 }
 
-export { createDTO, updateProfileDTO, whitelistUpdateProfileDTO, deleteDTO, confirmedEmailDTO, identifierDTO }
+type whitelistUpdateAccountProfileDTO = whitelistUpdateProfileForShipperDTO | whitelistUpdateProfileForSrvDTO
+
+export {
+  createDTO,
+  updateProfileDTO,
+  whitelistUpdateAccountProfileDTO,
+  whitelistUpdateProfileForShipperDTO,
+  whitelistUpdateProfileForSrvDTO,
+  deleteDTO,
+  confirmedEmailDTO,
+  identifierDTO,
+}

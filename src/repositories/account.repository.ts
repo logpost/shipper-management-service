@@ -1,7 +1,7 @@
 import { model, Model } from 'mongoose'
 import { ShipperInterface } from '../entities/interfaces/data/shipper.interface'
 import { ShipperSchema } from '../entities/schemas/shipper.schema'
-import { createDTO, identifierDTO, updateProfileDTO, whitelistUpdateProfileDTO } from '../entities/dtos/shipper.dto'
+import { createDTO, identifierDTO, whitelistUpdateAccountProfileDTO } from '../entities/dtos/shipper.dto'
 
 import config from '../config/config'
 import { JobInterface } from 'src/entities/interfaces/data/job.interface'
@@ -56,10 +56,10 @@ class AccountRepository {
 
   public async updateProfileShipperAccountByIdentifier(
     identifier: identifierDTO,
-    profile: whitelistUpdateProfileDTO,
-  ): Promise<string> {
-    const { shipper_id } = await this._model.updateOne(identifier, { $set: profile })
-    return shipper_id as string
+    profile: whitelistUpdateAccountProfileDTO,
+  ): Promise<number> {
+    const result = await this._model.updateOne(identifier, { $set: profile })
+    return result.n
   }
 
   public async deleteShipperAccount(identifier: identifierDTO): Promise<number> {
