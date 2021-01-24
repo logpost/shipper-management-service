@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import * as mongoose from 'mongoose'
 import JobSchema from './job.schema'
+import AddressSchema from './address.schema'
 
 export const ShipperSchema = new mongoose.Schema(
   {
@@ -10,7 +11,7 @@ export const ShipperSchema = new mongoose.Schema(
     name: { type: String, required: true, unique: true },
     display_name: { type: String, default: null },
     account_description: { type: String, default: null },
-    address: { type: String, default: null },
+    address: { type: AddressSchema, default: null },
     verified: { type: Boolean, default: false },
     role: { type: String, default: 'shipper' },
     account_type: {

@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { JobInterface } from './job.interface'
+import { AddressInterface } from './address.interface'
 interface ShipperDocument extends Document {
   readonly shipper_id: string
   readonly username: string
@@ -8,7 +9,7 @@ interface ShipperDocument extends Document {
   readonly name: string
   readonly display_name: string
   readonly tel: string
-  readonly address: string
+  readonly address: AddressInterface
   readonly account_type: string
   readonly role: string
   readonly account_description: string

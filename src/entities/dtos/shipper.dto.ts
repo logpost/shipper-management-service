@@ -1,4 +1,5 @@
 import { JobInterface } from '../interfaces/data/job.interface'
+import { AddressInterface } from '../interfaces/data/address.interface'
 interface createDTO {
   username: string
   password: string
@@ -6,7 +7,7 @@ interface createDTO {
   name: string
   display_name?: string
   tel?: string
-  address?: string
+  address?: AddressInterface
   role?: string
   account_type: string
   account_description?: string
@@ -26,7 +27,7 @@ interface whitelistUpdateProfileForShipperDTO {
   name?: string
   display_name?: string
   tel?: string
-  address?: string
+  address?: AddressInterface
   account_description?: string
   juristic_id?: string
 }
