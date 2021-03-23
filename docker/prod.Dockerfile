@@ -8,9 +8,9 @@ COPY *.sh *.json *.js Makefile ./
 COPY src src/ 
 COPY config config/
 
-RUN curl -o production.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/account-management-service/production.yml
-RUN curl -o development.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/account-management-service/development.yml
-RUN curl -o staging.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/account-management-service/staging.yml
+RUN curl -o production.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/shipper-management-service/production.yml
+RUN curl -o development.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/shipper-management-service/development.yml
+RUN curl -o staging.yml https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/logpost/logpost-environment/master/environment/shipper-management-service/staging.yml
 RUN mv -f production.yml staging.yml development.yml config
 
 RUN npm ci
@@ -23,5 +23,5 @@ COPY --from=builder /usr/src/app/node_modules node_modules/
 COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/config config/
 COPY --from=builder /usr/src/app/package.json .
-EXPOSE 5000 5000
+EXPOSE 8080 8080
 CMD [ "npm", "run", "start:prod"]
